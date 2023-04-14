@@ -129,14 +129,25 @@ class Ui_MainWindow(object):
         return 1
     
     def length(self,sentence):
+        text=sentence
+        text=text.split()
+        return len(text)
+
+    def checkLength(self):
+        w_text=self.plainTextEdit.toPlainText()
         g_text=self.label_2.text()
-        g_text=g_text.split()
-        return len(g_text)
-    
+        n1=self.length(w_text)
+        n2=self.length(g_text)
+        if n1==n2:
+            return 1
+        else:
+            return 0
+        
     def submit(self):
         if self.s!=0:
             w_text=self.plainTextEdit.toPlainText()
-            if self.check(w_text):
+            
+            if self.check(w_text) and self.checkLength():
                 self.e=time.time()
                 d=self.e-self.s
                 n=self.length(w_text)
@@ -146,8 +157,13 @@ class Ui_MainWindow(object):
                 self.label_4.setText(str(speed))
                 self.s=0
             else:
-                self.label_6.setText("Incorrect! | "+self.incorret_word+" instead of "+self.correct_word+" | (click reset)")
-                self.label_6.setStyleSheet("color:red")
+                if self.checkLength():
+                    self.label_6.setText("Incorrect! | "+self.incorret_word+" instead of "+self.correct_word+" | (click reset)")
+                    self.label_6.setStyleSheet("color:red")
+                else:
+                    self.label_6.setText("Incomplete Sentence. | (click reset)")
+                    self.label_6.setStyleSheet("color:red")
+                    
                 self.s=0
         else:
             self.label_6.setText("First press start button before start writing.(click reset)")
