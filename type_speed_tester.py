@@ -2,6 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import random
 import time
 
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         self.s=0
@@ -11,6 +12,8 @@ class Ui_MainWindow(object):
         self.texts=open("random sentences.txt","r").read().split("\n")
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(502, 510)
+        MainWindow.setFixedWidth(502)
+        MainWindow.setFixedHeight(510)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(self.centralwidget)
@@ -46,10 +49,12 @@ class Ui_MainWindow(object):
         self.label_5.setGeometry(QtCore.QRect(30, 290, 47, 13))
         self.label_5.setObjectName("label_5")
         
+        
         self.label_6 = QtWidgets.QLabel(self.centralwidget)
         self.label_6.setGeometry(QtCore.QRect(70, 290, 300, 13))
         self.label_6.setText("")
         self.label_6.setObjectName("label_6")
+
         
         self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_2.setGeometry(QtCore.QRect(30, 330, 75, 23))
@@ -60,6 +65,7 @@ class Ui_MainWindow(object):
         self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_3.setGeometry(QtCore.QRect(110, 330, 75, 23))
         self.pushButton_3.setObjectName("pushButton_3")
+        self.pushButton_3.setEnabled(False)
         self.pushButton_3.clicked.connect(self.submit)
 
         
@@ -69,12 +75,23 @@ class Ui_MainWindow(object):
         font.setPointSize(12)
         self.label_3.setFont(font)
         self.label_3.setObjectName("label_3")
+        
         self.label_4 = QtWidgets.QLabel(self.centralwidget)
         self.label_4.setGeometry(QtCore.QRect(180, 400, 200, 21))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.label_4.setFont(font)
         self.label_4.setObjectName("label_4")
+        self.label_7 = QtWidgets.QLabel(self.centralwidget)
+        self.label_7.setGeometry(QtCore.QRect(30, 170, 31, 20))
+        self.label_7.setObjectName("label_7")
+        
+        self.label_8 = QtWidgets.QLabel(self.centralwidget)
+        self.label_8.setGeometry(QtCore.QRect(70, 170, 391, 21))
+        self.label_8.setObjectName("label_8")
+        self.label_8.setText("First click the start button before writing.")
+        self.label_8.setStyleSheet("color:blue")
+        
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 502, 21))
@@ -86,7 +103,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-
+        
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
@@ -97,12 +114,15 @@ class Ui_MainWindow(object):
         self.pushButton_3.setText(_translate("MainWindow", "Submit"))
         self.label_3.setText(_translate("MainWindow", "Words Per minute:"))
         self.label_4.setText(_translate("MainWindow", "0.0"))
-
+        self.label_7.setText(_translate("MainWindow", "Info:"))
+        
     def reset(self):
         self.plainTextEdit.clear()
         self.label_6.setText("")
         self.label_4.setText("0.0")
         self.load_sentence()
+        self.pushButton_3.setEnabled(False)
+        self.label_8.setText("First click the start button before writing.")
         
     def load_sentence(self):
         text=random.choice(self.texts)
@@ -111,10 +131,13 @@ class Ui_MainWindow(object):
     def start(self):
         w_text=self.plainTextEdit.toPlainText()
         if w_text=="":
+            self.label_8.setText("Strat Writing in the box given below.")
             self.s=time.time()
         else:
             self.label_6.setText("First press start button before start writing.(click reset)")
             self.label_6.setStyleSheet("color:red")
+        self.pushButton_3.setEnabled(True)
+        
             
         
     def check(self,sentence):
@@ -168,7 +191,7 @@ class Ui_MainWindow(object):
         else:
             self.label_6.setText("First press start button before start writing.(click reset)")
             self.label_6.setStyleSheet("color:red")
-        
+        self.label_8.setText("")
 
 if __name__ == "__main__":
     import sys
